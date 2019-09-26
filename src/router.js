@@ -10,15 +10,37 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
+    },
+    {
+      path: '/enqueue',
+      name: 'enqueue',
+      component: () => import(/* webpackChunkName: "enqueue" */ './views/Enqueue.vue')
+    },
+    {
+      path: '/dequeue',
+      name: 'dequeue',
+      component: () => import(/* webpackChunkName: "dequeue" */ './views/Dequeue.vue')
+    },
+    {
+      path: '/showqueue',
+      name: 'showqueue',
+      component: () => import(/* webpackChunkName: "showqueue" */ './views/Showqueue.vue')
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: () => import(/* webpackChunkName: "logout" */ './views/Logout.vue')
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     }
   ]

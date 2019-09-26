@@ -7,19 +7,23 @@ Vue.use(Vuex, axios)
 export default new Vuex.Store({
   state: {
     count: 0,
-    data: []
+    loggedin: false,
+    somedata: []
   },
   mutations: {
-    increment (state) {
-      state.count++
+    setLoginState (state, gottenData) {
+      state.loggedin = gottenData
     },
     setData (state, gottenData) {
-      state.data = gottenData
+      state.somedata = gottenData
     }
   },
   actions: {
-    increment (context) {
-      context.commit('increment')
+    loginProcess (state) {
+      this.commit('setLoginState', true)
+    },
+    logoutProcess (state) {
+      this.commit('setLoginState', false)
     },
     getData (state) {
       axios
@@ -31,6 +35,11 @@ export default new Vuex.Store({
         .catch(error => {
           console.log(error)
         })
+    }
+  },
+  getters: {
+    isLoggedIn (state) {
+      return state.loggedin
     }
   }
 })

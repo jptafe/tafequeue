@@ -2,12 +2,26 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link v-if="checkLoginState() === false" to="/login">Login</router-link> |
+      <router-link v-if="checkLoginState()" to="/enqueue">Enqueue</router-link> |
+      <router-link v-if="checkLoginState()" to="/dequeue">Dequeue</router-link> |
+      <router-link v-if="checkLoginState()" to="/showqueue">Show Queue</router-link> |
+      <router-link v-if="checkLoginState()" to="/logout">Logout</router-link>
     </div>
     <router-view/>
   </div>
 </template>
-
+<script>
+export default {
+  name: 'app',
+  methods: {
+    checkLoginState () {
+      return this.$store.getters.isLoggedIn
+    }
+  }
+}
+</script>
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
