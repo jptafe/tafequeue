@@ -10,10 +10,13 @@ export default {
   name: 'dequeue',
   methods: {
     dequeueNow (e) {
-      this.$store.dispatch('removeQueue', e.srcElement)
+      this.$store.dispatch('removeQueue')
+      this.$router.push({ path: 'showqueue' })
     }
   },
   mounted () {
+    this.$store.dispatch('removeQueue')
+    this.$router.push({ path: 'showqueue' })
   }
 }
 </script>

@@ -27,8 +27,6 @@ export default {
         this.loginstate = 'user/pass incorrect'
       }
     }
-  },
-  mounted () {
   }
 }
 </script>

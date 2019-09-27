@@ -3,7 +3,7 @@
     <h1>Add to Queue</h1>
     <form @submit.prevent="enqueueNow">
       <input type="text" name="title">
-      <textarea name="desc"></textarea>
+      <textarea type="text" name="desc"></textarea>
       <input type="submit" value="submit">
     </form>
     <div>{{ queueState }}</div>
@@ -20,15 +20,15 @@ export default {
   },
   methods: {
     enqueueNow (e) {
-      this.$store.dispatch('addQueue', e.srcElement)
+      console.log(e)
+      var fields = { title: e.srcElement[0].value, desc: e.srcElement[1].value }
+      this.$store.dispatch('addQueue', fields)
       if (this.$store.getters.isInqueue) {
         this.$router.push({ path: 'showqueue' })
       } else {
         this.queueState = 'queue item not added'
       }
     }
-  },
-  mounted () {
   }
 }
 </script>

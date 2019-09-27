@@ -12,9 +12,6 @@ export default {
     goGet () {
       this.$store.dispatch('getQueue')
     }
-  },
-  mounted () {
-    this.$store.dispatch('getQueue')
   }
 }
 </script>

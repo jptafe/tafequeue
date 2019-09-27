@@ -7,6 +7,7 @@ Vue.use(Vuex, axios)
 export default new Vuex.Store({
   state: {
     loggedin: false,
+    loginID: 0,
     inQueue: false,
     queueItems: []
   },
@@ -14,11 +15,25 @@ export default new Vuex.Store({
     setLoginState (state, gottenData) {
       state.loggedin = gottenData
     },
+    setLoginID (state, payload) {
+      state.loginID = payload
+    },
     setData (state, gottenData) {
       state.queueItems = gottenData
     },
     setQueueState (state, gottenData) {
       state.inQueue = gottenData
+    },
+    addQueueItem (state, payload) {
+      state.queueItems.push({ uid: state.loginID, title: payload.title, desc: payload.desc })
+    },
+    delQueueItem (state, payload) {
+      state.queueItems.splice(
+        state.queueItems.map(
+          function (x) {
+            return x.uid
+          }
+        ).indexOf(state.loginID), 1)
     }
   },
   actions: {
@@ -29,6 +44,7 @@ export default new Vuex.Store({
       } else {
         this.commit('setLoginState', false)
       }
+      this.commit('setLoginID', 1234)
     },
     logoutProcess (state) {
       this.commit('setLoginState', false)
@@ -44,10 +60,13 @@ export default new Vuex.Store({
         })
     },
     addQueue (state, payload) {
+      console.log(payload)
       this.commit('setQueueState', true)
+      this.commit('addQueueItem', payload)
     },
-    removeQueue (state, payload) {
+    removeQueue (state) {
       this.commit('setQueueState', false)
+      this.commit('delQueueItem', false)
     }
   },
   getters: {
