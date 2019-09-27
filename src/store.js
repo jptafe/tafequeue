@@ -7,20 +7,24 @@ Vue.use(Vuex, axios)
 export default new Vuex.Store({
   state: {
     loggedin: false,
-    somedata: []
+    inQueue: false,
+    queueItems: []
   },
   mutations: {
     setLoginState (state, gottenData) {
       state.loggedin = gottenData
     },
     setData (state, gottenData) {
-      state.somedata = gottenData
+      state.queueItems = gottenData
+    },
+    setQueueState (state, gottenData) {
+      state.inQueue = gottenData
     }
   },
   actions: {
     loginProcess (state, payload) {
-      if(payload[0].value == 'foo' &&
-          payload[1].value == 'bar') {
+      if (payload[0].value === 'foo' &&
+          payload[1].value === 'bar') {
         this.commit('setLoginState', true)
       } else {
         this.commit('setLoginState', false)
@@ -29,7 +33,7 @@ export default new Vuex.Store({
     logoutProcess (state) {
       this.commit('setLoginState', false)
     },
-    getData (state) {
+    getQueue (state) {
       axios
         .get('https://jsonplaceholder.typicode.com/todos/1')
         .then(data => {
@@ -38,11 +42,23 @@ export default new Vuex.Store({
         .catch(error => {
           console.log(error)
         })
+    },
+    addQueue (state, payload) {
+      this.commit('setQueueState', true)
+    },
+    removeQueue (state, payload) {
+      this.commit('setQueueState', false)
     }
   },
   getters: {
     isLoggedIn (state) {
       return state.loggedin
+    },
+    isInqueue (state) {
+      return state.inQueue
+    },
+    listQueue (state) {
+      return state.queueItems
     }
   }
 })

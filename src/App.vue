@@ -4,8 +4,8 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link v-if="checkLoginState() === false" to="/login">Login</router-link> |
-      <router-link v-if="checkLoginState()" to="/enqueue">Enqueue</router-link> |
-      <router-link v-if="checkLoginState()" to="/dequeue">Dequeue</router-link> |
+      <router-link v-if="checkLoginState() && queueStatus() === false" to="/enqueue">Enqueue</router-link> |
+      <router-link v-if="checkLoginState() && queueStatus()" to="/dequeue">Dequeue</router-link> |
       <router-link v-if="checkLoginState()" to="/showqueue">Show Queue</router-link> |
       <router-link v-if="checkLoginState()" to="/logout">Logout</router-link>
     </div>
@@ -18,6 +18,9 @@ export default {
   methods: {
     checkLoginState () {
       return this.$store.getters.isLoggedIn
+    },
+    queueStatus () {
+      return this.$store.getters.isInqueue
     }
   }
 }

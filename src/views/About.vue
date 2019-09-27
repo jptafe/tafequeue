@@ -10,11 +10,11 @@ export default {
   name: 'about',
   methods: {
     goGet () {
-      this.$store.dispatch('getData')
+      this.$store.dispatch('getQueue')
     }
   },
   mounted () {
-    this.$store.dispatch('getData')
+    this.$store.dispatch('getQueue')
   }
 }
 </script>

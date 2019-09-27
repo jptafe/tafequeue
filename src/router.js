@@ -39,7 +39,11 @@ export default new Router({
         if (store.getters.isLoggedIn === false) {
           next({ name: 'login' })
         } else {
-          next()
+          if (store.getters.isInqueue === true) {
+            next({ name: 'showqueue' })
+          } else {
+            next()
+          }
         }
       }
     },
@@ -51,7 +55,11 @@ export default new Router({
         if (store.getters.isLoggedIn === false) {
           next({ name: 'login' })
         } else {
-          next()
+          if (store.getters.isInqueue === false) {
+            next({ name: 'showqueue' })
+          } else {
+            next()
+          }
         }
       }
     },
