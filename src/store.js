@@ -6,7 +6,6 @@ Vue.use(Vuex, axios)
 
 export default new Vuex.Store({
   state: {
-    count: 0,
     loggedin: false,
     somedata: []
   },
@@ -19,8 +18,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    loginProcess (state) {
-      this.commit('setLoginState', true)
+    loginProcess (state, payload) {
+      if(payload[0].value == 'foo' &&
+          payload[1].value == 'bar') {
+        this.commit('setLoginState', true)
+      } else {
+        this.commit('setLoginState', false)
+      }
     },
     logoutProcess (state) {
       this.commit('setLoginState', false)
@@ -29,7 +33,6 @@ export default new Vuex.Store({
       axios
         .get('https://jsonplaceholder.typicode.com/todos/1')
         .then(data => {
-          console.log(data)
           this.commit('setData', data.data)
         })
         .catch(error => {

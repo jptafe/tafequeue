@@ -11,6 +11,7 @@ export default {
   methods: {
     logoutNow () {
       this.$store.dispatch('logoutProcess')
+      this.$router.push({ path: 'login' })
     }
   },
   mounted () {

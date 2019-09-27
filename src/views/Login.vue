@@ -1,9 +1,11 @@
 <template>
   <div>
     <h1>Login to Queue</h1>
-    <form>
-      <input type="text"  placeholder="login">
-      <input type="button" value="login" @click="loginNow()">
+    <form @submit.prevent="loginNow">
+      <input type="text" name="username" placeholder="login">
+      <input type="password" name="password" placeholder="password">
+      <input type="submit" value="login">
+      <div>{{ loginstate }}</div>
     </form>
   </div>
 </template>
@@ -11,9 +13,19 @@
 
 export default {
   name: 'login',
+  data () {
+    return {
+      loginstate: ''
+    }
+  },
   methods: {
-    loginNow () {
-      this.$store.dispatch('loginProcess')
+    loginNow (e) {
+      this.$store.dispatch('loginProcess', e.srcElement)
+      if (this.$store.getters.isLoggedIn) {
+        this.$router.push({ path: 'showqueue' })
+      } else {
+        this.loginstate = 'user/pass incorrect'
+      }
     }
   },
   mounted () {
