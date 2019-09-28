@@ -9,8 +9,9 @@ export default new Vuex.Store({
     loggedin: false,
     loginID: 0,
     nick: '',
+    god: false,
     inQueue: false,
-    queueItems: []
+    queueItems: [{ uid: 4567, title: 'foobar', desc: 'barfoo' }]
   },
   mutations: {
     setLoginState (state, gottenData) {
@@ -81,6 +82,9 @@ export default new Vuex.Store({
     },
     whatLoginID (state) {
       return state.loginID
+    },
+    isGod (state) {
+      return state.god
     },
     whatNick (state) {
       return state.nick

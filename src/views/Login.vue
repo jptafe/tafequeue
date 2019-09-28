@@ -24,6 +24,8 @@ export default {
       if (this.$store.getters.isLoggedIn) {
         this.$router.push({ path: 'showqueue' })
       } else {
+        e.srcElement[0].value = ''
+        e.srcElement[1].value = ''
         this.loginstate = 'user/pass incorrect'
       }
     }
