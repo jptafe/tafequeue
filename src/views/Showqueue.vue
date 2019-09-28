@@ -6,7 +6,7 @@
         <span>{{ queueItem.uid }}</span>
         <span>{{ queueItem.title }}</span>
         <span>{{ queueItem.desc }}</span>
-        <input type="submit" v-if="queueItem.uid === uid" value="dequeue">
+        <input type="submit" v-if="queueItem.uid === uid || aGod" value="dequeue">
         <input type="button" value="suggest fix">
       </form>
     </div>
@@ -18,7 +18,8 @@ export default {
   data () {
     return {
       queue: [],
-      uid: 0
+      uid: 0,
+      aGod: false
     }
   },
   methods: {
@@ -31,6 +32,7 @@ export default {
   mounted () {
     this.queue = this.$store.getters.listQueue
     this.uid = this.$store.getters.whatLoginID
+    this.aGod = this.$store.getters.isGod
   }
 }
 </script>
