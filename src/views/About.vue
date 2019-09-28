@@ -10,7 +10,7 @@ export default {
   name: 'about',
   methods: {
     goGet () {
-      this.$store.dispatch('getQueue')
+      this.$store.dispatch('whatIsState')
     }
   }
 }

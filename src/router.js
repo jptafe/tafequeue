@@ -80,6 +80,7 @@ export default new Router({
       name: 'showqueue',
       component: () => import(/* webpackChunkName: "showqueue" */ './views/Showqueue.vue'),
       beforeEnter (to, from, next) {
+        store.dispatch('getQueue')
         if (store.getters.isLoggedIn === false) {
           next({ name: 'login' })
         } else {

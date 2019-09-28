@@ -9,6 +9,7 @@
     </div>
     <div id="nav">
       <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link> |
       <router-link v-if="checkLoginState() === false" to="/login">Login</router-link> |
       <router-link v-if="checkLoginState()" to="/settings">Settings</router-link> |
       <router-link v-if="checkLoginState() && queueStatus() === false" to="/enqueue">Enqueue</router-link> |

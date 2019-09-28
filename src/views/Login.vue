@@ -2,8 +2,8 @@
   <div>
     <h1>Login to Queue</h1>
     <form @submit.prevent="loginNow">
-      <input type="text" name="username" placeholder="login" value="foo">
-      <input type="password" name="password" placeholder="password" value="bar">
+      <input type="text" name="username" placeholder="login" value="468299219">
+      <input type="password" name="password" placeholder="password" value="asdfasdf">
       <input type="submit" value="login">
       <div>{{ loginstate }}</div>
     </form>

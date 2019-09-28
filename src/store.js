@@ -11,17 +11,20 @@ export default new Vuex.Store({
     nick: '',
     god: false,
     inQueue: false,
-    queueItems: [{ uid: 4567, title: 'foobar', desc: 'barfoo' }]
+    queueItems: []
   },
   mutations: {
     setLoginState (state, gottenData) {
       state.loggedin = gottenData
     },
-    setLoginID (state, payload) {
-      state.loginID = payload
+    setLoginID (state, gottenData) {
+      state.loginID = gottenData
     },
     setNick (state, gottenData) {
       state.nick = gottenData
+    },
+    setGod (state, gottenData) {
+      state.god = gottenData
     },
     setData (state, gottenData) {
       state.queueItems = gottenData
@@ -29,10 +32,10 @@ export default new Vuex.Store({
     setQueueState (state, gottenData) {
       state.inQueue = gottenData
     },
-    addQueueItem (state, payload) {
-      state.queueItems.push({ uid: state.loginID, title: payload.title, desc: payload.desc })
+    addQueueItem (state, gottenData) {
+      state.queueItems.push({ student_NO: state.loginID, queue_TITLE: gottenData.title, queue_DESC: gottenData.desc, nick: state.nick })
     },
-    delQueueItem (state, payload) {
+    delQueueItem (state) {
       state.queueItems.splice(
         state.queueItems.map(
           function (x) {
@@ -43,20 +46,45 @@ export default new Vuex.Store({
   },
   actions: {
     loginProcess (state, payload) {
-      if (payload[0].value === 'foo' &&
-          payload[1].value === 'bar') {
-        this.commit('setLoginState', true)
-      } else {
-        this.commit('setLoginState', false)
-      }
-      this.commit('setLoginID', 1234)
+      var fd = new FormData()
+      fd.append('username', payload[0].value)
+      fd.append('password', payload[1].value)
+      axios
+        .post('srv/ws.php',
+          fd,
+          { useCredentails: true })
+        .then(data => {
+          if (data.data.login) {
+            this.commit('setLoginState', true)
+            this.commit('setLoginID', data.data.login)
+            this.commit('setNick', data.data.nick)
+            if (data.data.privilege === 0) {
+              this.commit('setGod', true)
+            }
+            this.app.$router.push({ path: 'showqueue' })
+          }
+        })
     },
     logoutProcess (state) {
-      this.commit('setLoginState', false)
+      var fd = new FormData()
+      fd.append('logout', 'logout')
+      axios
+        .post('srv/ws.php',
+          fd,
+          { useCredentails: true })
+        .then(data => {
+          if (data.data.login === false) {
+            this.commit('setLoginState', false)
+            this.commit('setGod', false)
+            this.app.$router.push({ path: 'login' })
+          }
+        })
     },
     getQueue (state) {
       axios
-        .get('https://jsonplaceholder.typicode.com/todos/1')
+        .get('srv/ws.php?getData=listqueue',
+          {},
+          { useCredentails: true })
         .then(data => {
           this.commit('setData', data.data)
         })
@@ -65,15 +93,54 @@ export default new Vuex.Store({
         })
     },
     addQueue (state, payload) {
-      this.commit('setQueueState', true)
-      this.commit('addQueueItem', payload)
+      var fd = new FormData()
+      fd.append('student_NO', state.state.loginID)
+      fd.append('problem', payload.title)
+      fd.append('description', payload.desc)
+      axios
+        .post('srv/ws.php?getData=enqueue',
+          fd,
+          { useCredentails: true })
+        .then(data => {
+          if (data.data.insert) {
+            this.commit('setQueueState', true)
+            this.commit('addQueueItem', payload)
+            this.app.$router.push({ path: 'showqueue' })
+          }
+        })
     },
-    removeQueue (state) {
-      this.commit('setQueueState', false)
-      this.commit('delQueueItem', false)
+    removeQueue (state, payload) {
+      var url = 'srv/ws.php?getData=dequeue&queueid=' +
+        payload + '&student_NO=' + state.state.loginID
+      axios
+        .get(url,
+          {},
+          { useCredentails: true })
+        .then(data => {
+          if (data.data.delete) {
+            this.commit('setQueueState', false)
+            this.commit('delQueueItem')
+          }
+        })
     },
     updateSettings (state, payload) {
-      this.commit('setNick', payload[1].value)
+      var fd = new FormData()
+      fd.append('student_NO', state.state.loginID)
+      fd.append('nick', payload[1].value)
+      fd.append('pass', payload[2].value)
+      axios
+        .post('srv/ws.php?getData=settings',
+          fd,
+          { useCredentails: true })
+        .then(data => {
+          if (data.data.update) {
+            this.commit('setNick', payload[1].value)
+          }
+        })
+    },
+    whatIsState (state) {
+      console.log(state.state)
+      console.log(this.app.$store)
     }
   },
   getters: {

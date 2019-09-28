@@ -22,16 +22,13 @@
 
     function studentNoExists($studentNo, $password) {
         $conn = dbConnect();
-        $sql = "
-    SELECT * FROM student
-                student_NO = :stno AND
-                pass = :pass;";
+        $sql = "SELECT * FROM student WHERE student_NO = :stno AND pass = :pass";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':stno', $studentNo, PDO::PARAM_INT);
-        $stmt->bindParam(':pass', $studentNo, PDO::PARAM_STR);
+        $stmt->bindParam(':pass', $password, PDO::PARAM_STR);
         $stmt->execute();
-        $retVal = $stmt->fetch();
         if($stmt->rowCount() > 0) {
+            $retVal = $stmt->fetch(PDO::FETCH_ASSOC);
             return $retVal;
         } else {
             return false;
@@ -40,11 +37,12 @@
     function getQueue() {
         $conn = dbConnect();
         $sql = "
-    SELECT * FROM `queue` WHERE
-                queue_DATE > NOW() - INTERVAL 5 DAY;";
+    SELECT queue.queue_ID, queue.student_NO, queue.queue_TITLE, queue.queue_DESC, student.nick
+        FROM `queue` JOIN student ON student.student_NO = queue.student_NO
+            WHERE queue_DATE > NOW() - INTERVAL 5 DAY;";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     function getSuggestions() {
         $conn = dbConnect();
@@ -54,7 +52,7 @@
                 queue_DATE > NOW() - INTERVAL 5 DAY;";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     function enQueue($queueData) {
         $conn = dbConnect();
@@ -71,41 +69,47 @@
         $stmt->execute();
         if($stmt->rowCount() == 0) {
             $sql = "
-            INSERT INTO queue (student_NO, queue_TITLE, queue_DESC)
-                VALUES (:stno, :title, :desc);";
+        INSERT INTO queue (student_NO, queue_TITLE, queue_DESC)
+            VALUES (:stno, :title, :desc);";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':stno', $queueData['studentno'], PDO::PARAM_INT);
             $stmt->bindParam(':title', $queueTitle, PDO::PARAM_STR);
             $stmt->bindParam(':desc', $queueDesc, PDO::PARAM_STR);
             $stmt->execute();
-            return $stmt->rowCount();
+            return Array('insert'=>true);
         } else {
-            return 0;
+            return Array('insert'=>false);
         }
     }
     function deQueue($queueID, $studentNO) {
         $conn = dbConnect();
-        $checksql = "
-    SELECT * FROM queue WHERE
-        student_NO = :stno AND
-        queue_DATE > NOW() - INTERVAL 5 DAY AND
-        queue_ID = :queueno;";
-        $stmt = $conn->prepare($checksql);
-        $stmt->bindParam(':stno', $studentNO, PDO::PARAM_INT);
-        $stmt->bindParam(':queueno', $queueID, PDO::PARAM_INT);
-        $stmt->execute();
-        if($stmt->rowCount() > 0) {
+        if($studentNO == $_SESSION['student_NO'] || $_SESSION['privilege'] == 0) {
             $sql = "
     DELETE FROM queue
         WHERE queue_ID = :queueno;";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':queueno', $queueID, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->rowCount();
+            return Array('delete'=>true);
         } else {
-            return 0;
+            return Array('delete'=>false);
         }
     }
-
-
+    function upSettings($studentNO, $nick, $pass) {
+        $conn = dbConnect();
+        $cleanNick = sanatise_input($nick);
+        if($studentNO == $_SESSION['student_NO']) {
+            $sql = "
+        UPDATE student SET nick = :nick, pass = :pass
+            WHERE student_NO = :studentno";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':studentno', $studentNO, PDO::PARAM_INT);
+            $stmt->bindParam(':nick', $nick, PDO::PARAM_STR);
+            $stmt->bindParam(':pass', $pass, PDO::PARAM_STR);
+            $stmt->execute();
+            return Array('update'=>true);
+        } else {
+            return Array('update'=>false);
+        }
+    }
 ?>

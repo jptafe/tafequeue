@@ -2,13 +2,17 @@
   <div>
     <h1>Show the Queue</h1>
     <div>
-      <form @submit.prevent="dequeue" v-for="queueItem in queue" v-bind:key="queueItem.uid">
-        <span>{{ queueItem.uid }}</span>
-        <span>{{ queueItem.title }}</span>
-        <span>{{ queueItem.desc }}</span>
-        <input type="submit" v-if="queueItem.uid === uid || aGod" value="dequeue">
-        <input type="button" value="suggest fix">
+      <form @submit.prevent="dequeue" v-for="queueItem in queue" v-bind:key="queueItem.queue_ID">
+        <span v-if="queueItem.nick === ''">{{ queueItem.student_NO }}</span>
+        <span v-if="queueItem.nick !== ''">{{ queueItem.nick }}</span>
+        <span>{{ queueItem.queue_TITLE }}</span>
+        <span>{{ queueItem.queue_DESC }}</span>
+        <input type="hidden" name="queue_id" :value="queueItem.queue_ID">
+        <input type="button" @click="openFixForm" value="suggest fix">
+        <input type="submit" v-if="queueItem.student_NO === uid || aGod" value="dequeue">
       </form>
+      <fix-form></fix-form>
+      <fixes-list></fixes-list>
     </div>
   </div>
 </template>
@@ -24,7 +28,7 @@ export default {
   },
   methods: {
     dequeue (e) {
-      this.$store.dispatch('removeQueue')
+      this.$store.dispatch('removeQueue', e.srcElement[0].value)
     }
   },
   computed: {
@@ -36,3 +40,8 @@ export default {
   }
 }
 </script>
+<style>
+  form span {
+    margin-right: .5em;
+  }
+</style>
