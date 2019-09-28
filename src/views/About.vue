@@ -1,7 +1,9 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
-    <button @click="goGet()">Hit Me</button>
+    <h1>TAFE Queue</h1>
+    <h3>provides real-time student support</h3>
+    <p>Enter your student number to start</p>
+    <button @click="goGet()">Irrelevant Debug Button check devtools to see what happened</button>
   </div>
 </template>
 <script>

@@ -2,6 +2,8 @@
     session_start();
     include 'db.php';
 
+// Put some rate limits & domain locking
+
     if(isset($_POST['username'])) {
         $studentNumber = studentNoExists($_POST['username'], $_POST['password']);
         if($studentNumber != false) {

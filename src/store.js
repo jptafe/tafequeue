@@ -58,7 +58,7 @@ export default new Vuex.Store({
             this.commit('setLoginState', true)
             this.commit('setLoginID', data.data.login)
             this.commit('setNick', data.data.nick)
-            if (data.data.privilege === 0) {
+            if (data.data.privilege === '0') {
               this.commit('setGod', true)
             }
             this.app.$router.push({ path: 'showqueue' })

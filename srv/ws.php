@@ -1,10 +1,11 @@
 <?php
-
     if($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
       //  header('Access-Control-Allow-Headers: X-Requested-With');
         header("HTTP/1.1 200 OK");
         die();
     }
+
+    // include a settings file to put db pass & doman lock
 
     header('Content-Type: application/json');
 

@@ -34,6 +34,7 @@
             return false;
         }
     }
+
     function getQueue() {
         $conn = dbConnect();
         $sql = "
@@ -44,6 +45,7 @@
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
     function getSuggestions() {
         $conn = dbConnect();
         $sql = "
@@ -54,12 +56,12 @@
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     function enQueue($queueData) {
         $conn = dbConnect();
         $queueTitle = sanatise_input($queueData['title']);
         $queueDesc = sanatise_input($queueData['desc']);
 
-    // does the student already have an item in the queue?
         $checksql = "
     SELECT * FROM queue WHERE
         student_NO = :stno AND
@@ -81,6 +83,7 @@
             return Array('insert'=>false);
         }
     }
+
     function deQueue($queueID, $studentNO) {
         $conn = dbConnect();
         if($studentNO == $_SESSION['student_NO'] || $_SESSION['privilege'] == 0) {
@@ -95,6 +98,7 @@
             return Array('delete'=>false);
         }
     }
+
     function upSettings($studentNO, $nick, $pass) {
         $conn = dbConnect();
         $cleanNick = sanatise_input($nick);
