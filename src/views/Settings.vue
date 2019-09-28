@@ -3,7 +3,7 @@
     <h1>This is an settings page</h1>
     <form @submit.prevent="updateSettings">
       <input type="number" :value="loginID" disabled>
-      <input type="text" name="nickname" :value="nickName">
+      <input type="text" name="nickname" v-model:value="nick">
       <input type="password" v-model:value="pass1" name="password" @change="passwordsEqual" placeholder="password">
       <input type="password" v-model:value="pass2" name="password_again" @change="passwordsEqual" placeholder="password again">
       <input type="submit" value="update changes">
@@ -19,15 +19,13 @@ export default {
     return {
       pass1: '',
       pass2: '',
-      errorDIV: ''
+      errorDIV: '',
+      nick: ''
     }
   },
   computed: {
     loginID () {
       return this.$store.getters.whatLoginID
-    },
-    nickName () {
-      return this.$store.getters.whatNick
     }
   },
   methods: {
@@ -43,8 +41,15 @@ export default {
       }
     },
     updateSettings (e) {
-      this.$store.dispatch('updateSettings', e.srcElement[1].value)
+      if(this.pass1 == this.pass2) {
+        this.$store.dispatch('updateSettings', e.srcElement)
+      } else {
+        this.errorDIV = 'passwords do not match'
+      }
     }
+  },
+  mounted () {
+    this.nick = this.$store.getters.whatNick
   }
 }
 </script>

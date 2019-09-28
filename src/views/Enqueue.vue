@@ -22,7 +22,7 @@ export default {
     enqueueNow (e) {
       var fields = { title: e.srcElement[0].value, desc: e.srcElement[1].value }
       this.$store.dispatch('addQueue', fields)
-      if (this.$store.getters.isInqueue) {
+      if (this.$store.getters.isinQueue) {
         this.$router.push({ path: 'showqueue' })
       } else {
         this.queueState = 'queue item not added'

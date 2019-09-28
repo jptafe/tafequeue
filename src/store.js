@@ -72,7 +72,7 @@ export default new Vuex.Store({
       this.commit('delQueueItem', false)
     },
     updateSettings (state, payload) {
-      this.commit('setNick', payload)
+      this.commit('setNick', payload[1].value)
     }
   },
   getters: {
@@ -85,7 +85,7 @@ export default new Vuex.Store({
     whatNick (state) {
       return state.nick
     },
-    isInqueue (state) {
+    isinQueue (state) {
       return state.inQueue
     },
     listQueue (state) {

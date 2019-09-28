@@ -27,7 +27,7 @@ export default {
       return this.$store.getters.isLoggedIn
     },
     queueStatus () {
-      return this.$store.getters.isInqueue
+      return this.$store.getters.isinQueue
     }
   },
   computed: {

@@ -51,7 +51,7 @@ export default new Router({
         if (store.getters.isLoggedIn === false) {
           next({ name: 'login' })
         } else {
-          if (store.getters.isInqueue === true) {
+          if (store.getters.isinQueue === true) {
             next({ name: 'showqueue' })
           } else {
             next()
@@ -67,7 +67,7 @@ export default new Router({
         if (store.getters.isLoggedIn === false) {
           next({ name: 'login' })
         } else {
-          if (store.getters.isInqueue === false) {
+          if (store.getters.isinQueue === false) {
             next({ name: 'showqueue' })
           } else {
             next()
