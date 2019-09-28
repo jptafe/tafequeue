@@ -32,6 +32,18 @@ export default new Router({
       }
     },
     {
+      path: '/settings',
+      name: 'settings',
+      component: () => import(/* webpackChunkName: "settings" */ './views/Settings.vue'),
+      beforeEnter (to, from, next) {
+        if (store.getters.isLoggedIn === false) {
+          next({ name: 'login' })
+        } else {
+          next()
+        }
+      }
+    },
+    {
       path: '/enqueue',
       name: 'enqueue',
       component: () => import(/* webpackChunkName: "enqueue" */ './views/Enqueue.vue'),

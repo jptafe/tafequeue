@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     enqueueNow (e) {
-      console.log(e)
       var fields = { title: e.srcElement[0].value, desc: e.srcElement[1].value }
       this.$store.dispatch('addQueue', fields)
       if (this.$store.getters.isInqueue) {

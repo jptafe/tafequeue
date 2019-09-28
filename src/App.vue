@@ -1,9 +1,16 @@
 <template>
   <div id="app">
+    <div id="status" v-if="checkLoginState()">
+      <ul>
+        <li>Queue Items: {{ queueCount }}</li>
+        <li>TAFE ID: {{ tafeID }}</li>
+        <li v-if="nickName.length > 0">Nick Name: {{ nickName }}</li>
+      </ul>
+    </div>
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
       <router-link v-if="checkLoginState() === false" to="/login">Login</router-link> |
+      <router-link v-if="checkLoginState()" to="/settings">Settings</router-link> |
       <router-link v-if="checkLoginState() && queueStatus() === false" to="/enqueue">Enqueue</router-link> |
       <router-link v-if="checkLoginState() && queueStatus()" to="/dequeue">Dequeue</router-link> |
       <router-link v-if="checkLoginState()" to="/showqueue">Show Queue</router-link> |
@@ -21,6 +28,17 @@ export default {
     },
     queueStatus () {
       return this.$store.getters.isInqueue
+    }
+  },
+  computed: {
+    queueCount () {
+      return this.$store.getters.noinQueue
+    },
+    tafeID () {
+      return this.$store.getters.whatLoginID
+    },
+    nickName () {
+      return this.$store.getters.whatNick
     }
   }
 }

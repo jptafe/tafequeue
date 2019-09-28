@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     loggedin: false,
     loginID: 0,
+    nick: '',
     inQueue: false,
     queueItems: []
   },
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     },
     setLoginID (state, payload) {
       state.loginID = payload
+    },
+    setNick (state, gottenData) {
+      state.nick = gottenData
     },
     setData (state, gottenData) {
       state.queueItems = gottenData
@@ -60,24 +64,35 @@ export default new Vuex.Store({
         })
     },
     addQueue (state, payload) {
-      console.log(payload)
       this.commit('setQueueState', true)
       this.commit('addQueueItem', payload)
     },
     removeQueue (state) {
       this.commit('setQueueState', false)
       this.commit('delQueueItem', false)
+    },
+    updateSettings (state, payload) {
+      this.commit('setNick', payload)
     }
   },
   getters: {
     isLoggedIn (state) {
       return state.loggedin
     },
+    whatLoginID (state) {
+      return state.loginID
+    },
+    whatNick (state) {
+      return state.nick
+    },
     isInqueue (state) {
       return state.inQueue
     },
     listQueue (state) {
       return state.queueItems
+    },
+    noinQueue (state) {
+      return state.queueItems.length
     }
   }
 })
