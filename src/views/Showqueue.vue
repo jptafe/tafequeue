@@ -2,7 +2,7 @@
   <div>
     <h1>Show the Queue</h1>
     <div>
-      <form @submit.prevent="dequeue" v-for="queueItem in queue">
+      <form @submit.prevent="dequeue" v-for="queueItem in queue" v-bind:key="queueItem.uid">
         <span>{{ queueItem.uid }}</span>
         <span>{{ queueItem.title }}</span>
         <span>{{ queueItem.desc }}</span>
