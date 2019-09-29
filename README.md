@@ -1,27 +1,18 @@
 # tafequeue
+
+An online student support queueing system.
+The teacher can display the queue on the board and systematically work with each student in turn
+
+#todo
+The Vue lifecycle is not implemented correctly
+The Vue router won't work
+FEATURE: give students the opportunity to help each other with suggestions
+
 ## Project setup
 ```
 npm install
-```
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-### Compiles and minifies for production
-```
 npm run build
+sudo docker-compose build
+sudo docker-compose run
+curl http://localhost/ws/ws.php?getData=created
 ```
-### Run your tests
-```
-npm run test
-```
-### Lints and fixes files
-```
-npm run lint
-```
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-
-#NOTES
-
