@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: a_secret_pw
+      MYSQL_DATABASE: sqs 
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: devpass
+    volumes: 
+      - dbdata:/var/lib/mysql
+    networks:
+      - web
+    ports:
+      - "3306:3306"
+  web:
+    build: .
+    container_name: web
+    depends_on:
+      - db
+    networks:
+      - web
+    ports:
+      - "80:80"
+
+networks:
+  web:
+    driver: bridge 
+
+volumes:
+  dbdata: {}

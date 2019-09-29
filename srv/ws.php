@@ -29,6 +29,9 @@
         if($_GET['getData'] == 'settings') {
             $res = upSettings($_POST['student_NO'], $_POST['nick'], $_POST['pass']);
         }
+        if($_GET['getData'] == 'createdb') {
+            $res = populateDatabase();
+        }
     }
     if(isset($res)) {
         echo json_encode($res);

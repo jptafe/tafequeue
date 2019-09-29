@@ -11,8 +11,11 @@
         return $input_string;
     }
     function dbConnect() {
-        //GCP
-        $conn = new PDO("mysql:host=localhost;dbname=sqs", 'root', '');
+//Localhost
+//        $conn = new PDO("mysql:host=localhost;dbname=sqs", 'root', '');
+//Docker
+        $conn = new PDO("mysql:host=db;port=3306;dbname=sqs", 'devuser', 'devpass');
+//GCP
 //        $conn = new PDO('mysql:unix_socket=/cloudsql/cmssubdomains:australia-southeast1:databstore;dbname=support_queue', 'queuemanager', '');
 
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -45,7 +48,7 @@
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     function getSuggestions() {
         $conn = dbConnect();
         $sql = "
@@ -115,5 +118,13 @@
         } else {
             return Array('update'=>false);
         }
+    }
+    function populateDatabase() {
+        $conn = dbConnect();
+        $sqlfile = fopen("sql/sqs.sql", "r");
+        $sql = stream_get_contents($sqlfile);
+        fclose($sqlfile);
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
     }
 ?>
