@@ -14,5 +14,5 @@ npm install
 npm run build
 sudo docker-compose build
 sudo docker-compose run
-curl http://localhost/ws/ws.php?getData=created
+curl http://localhost/ws/ws.php?getData=createdb
 ```
