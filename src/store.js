@@ -40,14 +40,22 @@ export default new Vuex.Store({
     addQueueItem (state, gottenData) {
       state.queueItems.push({ student_NO: state.loginID, queue_TITLE: gottenData.title, queue_DESC: gottenData.desc, nick: state.nick })
     },
-    delQueueItem (state) {
-      console.log(state)
-      state.queueItems.splice(
-        state.queueItems.map(
-          function (x) {
-            return x.student_NO
-          }
-        ).indexOf(state.loginID), 1)
+    delQueueItem (state, payload) {
+      if (state.god === true) {
+        state.queueItems.splice(
+          state.queueItems.map(
+            function (x) {
+              return x.student_NO
+            }
+          ).indexOf(payload), 1)
+      } else {
+        state.queueItems.splice(
+          state.queueItems.map(
+            function (x) {
+              return x.student_NO
+            }
+          ).indexOf(state.loginID), 1)
+      }
     }
   },
   actions: {
@@ -126,7 +134,7 @@ export default new Vuex.Store({
         .then(data => {
           if (data.data.delete) {
             this.commit('setQueueState', false)
-            this.commit('delQueueItem')
+            this.commit('delQueueItem', payload)
           }
         })
     },
