@@ -60,22 +60,6 @@ export default new Router({
       }
     },
     {
-      path: '/dequeue',
-      name: 'dequeue',
-      component: () => import(/* webpackChunkName: "dequeue" */ './views/Dequeue.vue'),
-      beforeEnter (to, from, next) {
-        if (store.getters.isLoggedIn === false) {
-          next({ name: 'login' })
-        } else {
-          if (store.getters.isinQueue === false) {
-            next({ name: 'showqueue' })
-          } else {
-            next()
-          }
-        }
-      }
-    },
-    {
       path: '/showqueue',
       name: 'showqueue',
       component: () => import(/* webpackChunkName: "showqueue" */ './views/Showqueue.vue'),

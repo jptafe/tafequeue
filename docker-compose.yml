@@ -17,6 +17,8 @@ services:
   web:
     build: .
     container_name: web
+    volumes: 
+      - webdata:/var/www/html
     depends_on:
       - db
     networks:
@@ -30,3 +32,4 @@ networks:
 
 volumes:
   dbdata: {}
+  webdata: {}

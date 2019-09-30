@@ -3,6 +3,7 @@
     <h1>{{ msg }}</h1>
     <button @click="incrementCounter()">Press ME</button>
     <div>{{ counter }}</div>
+    <input type="number" v-model="counter">
     <div>Is Prime: {{ primeNumber }} </div>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>

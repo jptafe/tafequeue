@@ -13,7 +13,6 @@
       <router-link v-if="checkLoginState() === false" to="/login">Login</router-link> |
       <router-link v-if="checkLoginState()" to="/settings">Settings</router-link> |
       <router-link v-if="checkLoginState() && queueStatus() === false" to="/enqueue">Enqueue</router-link> |
-      <router-link v-if="checkLoginState() && queueStatus()" to="/dequeue">Dequeue</router-link> |
       <router-link v-if="checkLoginState()" to="/showqueue">Show Queue</router-link> |
       <router-link v-if="checkLoginState()" to="/logout">Logout</router-link>
     </div>

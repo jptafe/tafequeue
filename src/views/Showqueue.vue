@@ -2,7 +2,7 @@
   <div>
     <h1>Show the Queue</h1>
     <div>
-      <form @submit.prevent="dequeue" v-for="queueItem in queue" v-bind:key="queueItem.queue_ID">
+      <form @submit.prevent="dequeue" v-for="queueItem in this.$store.state.queueItems" v-bind:key="queueItem.queue_ID">
         <span v-if="queueItem.nick === ''">{{ queueItem.student_NO }}</span>
         <span v-if="queueItem.nick !== ''">{{ queueItem.nick }}</span>
         <span>{{ queueItem.queue_TITLE }}</span>
@@ -21,7 +21,6 @@ export default {
   name: 'showqueue',
   data () {
     return {
-      queue: [],
       uid: 0,
       aGod: false
     }
@@ -29,12 +28,14 @@ export default {
   methods: {
     dequeue (e) {
       this.$store.dispatch('removeQueue', e.srcElement[0].value)
+    },
+    openFixForm () {
+
     }
   },
   computed: {
   },
   mounted () {
-    this.queue = this.$store.getters.listQueue
     this.uid = this.$store.getters.whatLoginID
     this.aGod = this.$store.getters.isGod
   }

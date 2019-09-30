@@ -1,8 +1,9 @@
 import Vue from 'vue'
+import router from './router'
 import Vuex from 'vuex'
 import axios from 'axios'
 
-Vue.use(Vuex, axios)
+Vue.use(Vuex, axios, router)
 
 export default new Vuex.Store({
   state: {
@@ -28,6 +29,10 @@ export default new Vuex.Store({
     },
     setData (state, gottenData) {
       state.queueItems = gottenData
+      var out = gottenData.filter(function (queue) { return queue.student_NO.indexOf(state.loginID) !== -1 })
+      if (out.length > 0) {
+        state.inQueue = true
+      }
     },
     setQueueState (state, gottenData) {
       state.inQueue = gottenData
@@ -36,10 +41,11 @@ export default new Vuex.Store({
       state.queueItems.push({ student_NO: state.loginID, queue_TITLE: gottenData.title, queue_DESC: gottenData.desc, nick: state.nick })
     },
     delQueueItem (state) {
+      console.log(state)
       state.queueItems.splice(
         state.queueItems.map(
           function (x) {
-            return x.uid
+            return x.student_NO
           }
         ).indexOf(state.loginID), 1)
     }
@@ -61,7 +67,8 @@ export default new Vuex.Store({
             if (data.data.privilege === '0') {
               this.commit('setGod', true)
             }
-            this.app.$router.push({ path: 'showqueue' })
+            router.push({ path: 'showqueue' })
+            state.dispatch('getQueue')
           }
         })
     },
@@ -76,7 +83,7 @@ export default new Vuex.Store({
           if (data.data.login === false) {
             this.commit('setLoginState', false)
             this.commit('setGod', false)
-            this.app.$router.push({ path: 'login' })
+            router.push({ path: 'login' })
           }
         })
     },
@@ -105,7 +112,7 @@ export default new Vuex.Store({
           if (data.data.insert) {
             this.commit('setQueueState', true)
             this.commit('addQueueItem', payload)
-            this.app.$router.push({ path: 'showqueue' })
+            router.push({ path: 'showqueue' })
           }
         })
     },
@@ -139,8 +146,7 @@ export default new Vuex.Store({
         })
     },
     whatIsState (state) {
-      console.log(state.state)
-      console.log(this.app.$store)
+      console.log(state)
     }
   },
   getters: {
