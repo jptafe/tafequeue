@@ -45,7 +45,7 @@ export default new Vuex.Store({
         state.queueItems.splice(
           state.queueItems.map(
             function (x) {
-              return x.student_NO
+              return x.queue_ID
             }
           ).indexOf(payload), 1)
       } else {

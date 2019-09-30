@@ -18,7 +18,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      counter: 1,
+      counter: 31,
       primeNumber: ''
     }
   },
